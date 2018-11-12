@@ -182,3 +182,15 @@ Function Disable-UAC {
 		New-ItemProperty -Path $UACReg -Name "EnableLUA" -Value "0" -PropertyType DWORD -Force | Out-Null
 	}
 }
+
+New-ItemProperty -Path HKLM:\Software\Policies\Microsoft\Windows\CloudContent -Name "DisableWindowsConsumerFeatures" -Value "1" -PropertyType DWORD -Force | Out-Null
+
+Function Unpin-TaskbarApps {
+	Param (
+		[string]$app
+	)
+	
+	try {
+		((New-Object -Com Shell.Application).Namespace('shell:::{4234d49b-0245-4df3-b780-3893943456e1}').Items() | Where-Object {$_.Name -eq $app}).Verbs() | Where-Object {$_.Name.Replace('&','') -match 'From "Taskbar" UnPin | Unpin from Taskbar'} | % {$_.DoIt()}
+		return "App $app unpinned from Taskbar"
+}
