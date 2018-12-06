@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding"utf-8"?>
+<LayoutModificationTemplate
+    xmlns="http://schemas.microsoft.com/Start/2014/LayoutModification"
+    xmlns:defaultlayout="http://schemas.microsoft.com/Start/2014/FullDefaultLayout"
+    xmlns:start="http://schemas.microsoft.com/Start/2014/StartLayout"
+    xmlns:taskbar="http://schemas.microsoft.com/Start/2014/TaskbarLayout"
+    Version="1">
+    <LayoutOptions StartTileGroupCellWidth="6" StartTileGroupColumnCount="1" />
+    <DefaultLayoutOverride>
+    ...
+    </DefaultLayoutOverride>
+    <CustomTaskbarLayoutCollection PinListPlacement="Replacement">
+        <defaultLayout:TaskbarLayout>
+            <taskbar:TaskbarPinList>
+                <taskbar:UWA AppUserModelID="Microsoft.MicrosoftEdge_8wekyb3d8bbwe!MicrosoftEdge" />
+                <taskbar:DesktopApp DesktopApplicationLinkPath="%APPDATA%\Microsoft\Windows\Start Menu\Programs\System Tools\File Explorer.lnk" />
+                <taskbar:DesktopApp DesktopApplicationLinkPath="C:\Program Files (x86)\Google\Chrome\Application\chrome.exe" />
+                <taskbar:DesktopApp DesktopApplicationLinkPath="C:\Program Files\Microsoft Office\root\Office16\OUTLOOK.EXE" />
+                <taskbar:DesktopApp DesktopApplicationLinkPath="C:\Program Files\Microsoft Office\root\Office16\EXCEL.EXE" />
+                <taskbar:DesktopApp DesktopApplicationLinkPath="C:\Program Files\Microsoft Office\root\Office16\WINWORD.EXE" />
+            </taskbar:TaskbarPinList>
+        </defaultLayout:TaskbarLayout>
+    </CustomTaskbarLayoutCollection>
+</LayoutModificationTemplate>
