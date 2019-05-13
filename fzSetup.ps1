@@ -10,6 +10,7 @@ $link.TargetPath = "C:\Program Files\FileZilla FTP Client\filezilla.exe"
 $link.Arguments = "ftp://OSANT@kjscribe:oralsurg@ftp.transcriptiongear.com"
 $link.Save()
 
+<#
 If (!(Test-Path "HKU:\")) {
     New-PSDrive -Name HKU -PSProvider Registry -Root HKEY_USERS | Out-Null
 }
@@ -31,9 +32,10 @@ $sid = Get-ItemProperty -Path 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersio
 $sid = $sid.Replace(' ','')
 
 $desktop = (Get-ItemProperty -Path "HKU:\$sid\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "Desktop").Desktop
+#>
 
 $obj = New-Object -ComObject WScript.Shell
-$link = $obj.CreateShortcut("$($desktop)\FileZilla.lnk")
+$link = $obj.CreateShortcut("C:\Users\Public\Desktop\FileZilla.lnk")
 $link.TargetPath = "C:\Program Files\FileZilla FTP Client\filezilla.exe" 
 $link.Arguments = "ftp://OSANT@kjscribe:oralsurg@ftp.transcriptiongear.com"
 $link.Save()
