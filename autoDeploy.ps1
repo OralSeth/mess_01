@@ -208,7 +208,7 @@ Function DisableTelemetry {
     Disable-ScheduledTask -TaskName "Microsoft\Windows\Autochk\Proxy" | Out-Null
     Disable-ScheduledTask -TaskName "Microsoft\Windows\Customer Experience Improvement Program\Consolidator" | Out-Null
     Disable-ScheduledTask -TaskName "Microsoft\Windows\Customer Experience Improvement Program\UsbCeip" | Out-Null
-    Disable-ScheduledTask -TaskName "Microsoft\Windows\DiskDiagnostic\Microsoft-Windows-DiskDiagnosticDataCollectore" | Out-Null
+    Disable-ScheduledTask -TaskName "Microsoft\Windows\DiskDiagnostic\Microsoft-Windows-DiskDiagnosticDataCollector" | Out-Null
 }
 
 Function DisableWifiSense {
@@ -262,7 +262,7 @@ Function DisableAppSuggestions {
     If (!(Test-Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\CloudContent")) {
         New-Item -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\CloudContent" -Force | Out-Null
     }
-    Set-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\CloudContent" -Name "DisableWindowsConsumerFeatures" -Type DWORD Value "1"
+    Set-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\CloudContent" -Name "DisableWindowsConsumerFeatures" -Type DWORD -Value "1"
     If ([System.Environment]::OSVersion.Version.Build -ge 17134) {
         $key = Get-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\CloudStore\Store\Cache\DefaultAccount\*windows.data.placeholdertilecollection\Current"
         Set-ItemProperty -Path $key.PSPath -Name "Data" -Type Binary -Value $key.Data[0..15]
@@ -277,8 +277,8 @@ Function DisableFeedback {
     }
     Set-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Siuf\Rules" -Name "NumberOfSIUFInPeriod" -Type DWORD -Value "0"
     Set-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\DataCollection" -Name "DoNotShowFeedbackNotifications" -Type DWORD -Value "0"
-    Disable-ScheduledTask -Path "Microsoft\Windows\Feedback\Siuf\DmClient" -ErrorAction SilentlyContinue
-    Disable-ScheduledTask -Path "Microsoft\Windows\Feedback\Siuf\DmClientOnScenarioDownload" -ErrorAction SilentlyContinue
+    Disable-ScheduledTask -TaskName "Microsoft\Windows\Feedback\Siuf\DmClient" -ErrorAction SilentlyContinue
+    Disable-ScheduledTask -TaskName "Microsoft\Windows\Feedback\Siuf\DmClientOnScenarioDownload" -ErrorAction SilentlyContinue
 }
 
 Function DisableTailoredExperiences {
@@ -286,7 +286,7 @@ Function DisableTailoredExperiences {
     If (!(Test-Path "HKCU:\SOFTWARE\Policies\Microsoft\Windows\CloudContent")) {
         New-Item -Path "HKCU:\SOFTWARE\Policies\Microsoft\Windows\CloudContent" -Force | Out-Null
     }
-    Set-ItemProperty -Path "HKCU:\SOFTWARE\Policies\Microsoft\Windows\CloudContent" -Name "DisableTailoredExperiencesWithDiagnosticData" -ErrorAction SilentlyContinue
+    Set-ItemProperty -Path "HKCU:\SOFTWARE\Policies\Microsoft\Windows\CloudContent" -Name "DisableTailoredExperiencesWithDiagnosticData" -Value "1" -ErrorAction SilentlyContinue
 }
 
 Function DisableAdvertisingID {
@@ -323,7 +323,7 @@ Function AdjustFirewall {
 }
 
 Function SetNetworkDiscovery {
-    $ndServices = @("SSDPServer","dnscache","upnphost","FDResPub","winrm")
+    $ndServices = @("SSDPSRV","dnscache","upnphost","FDResPub","winrm")
 
     ForEach ($svc in $ndServices) {
         $state = (Get-Service $svc | Select Status).Status
@@ -415,7 +415,7 @@ Function UninstallMsftBloat {
 }
 
 Function Uninstall3rdPartyBloat {
-    Write-Otuput "Uninstalling Default 3rd Party Bloatware..."
+    Write-Output "Uninstalling Default 3rd Party Bloatware..."
     $apps = @(
         "4DF9E0F8.Netflix",
         "828B5831.HiddenCityMysteryofShadows",
