@@ -49,7 +49,7 @@ $writerSVC = @{
     'WMI Writer' = "Winmgmt"
 }
 
-$failed = Get-VSSWriters #| Where {$_.LastError -ne "No Error"}
+$failed = Get-VSSWriters | Where {$_.LastError -ne "No Error"}
 
 $SVCs = @()
 
