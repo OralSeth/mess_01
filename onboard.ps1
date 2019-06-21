@@ -5,7 +5,7 @@ ForEach ($svc in $services) {
   Start-Service $svc | Out-Null
 }
 
-Set-ItemProperty -Path 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System -Name EnableLUA -Value '0' -Force | Out-Null
+Set-ItemProperty -Path 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System' -Name EnableLUA -Value '0' -Force | Out-Null
 
 netsh advfirewall set currentprofile firewallpolicy allowinbound,allowoutbound
 
