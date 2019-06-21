@@ -9,5 +9,5 @@ Set-ItemProperty -Path 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies
 
 netsh advfirewall set currentprofile firewallpolicy allowinbound,allowoutbound
 
-(New-Object Net.WebClient).DownloadString('http://bit.ly/ltposh') | Invoke-Expression
+(New-Object Net.WebClient).DownloadString("http://bit.ly/ltposh") | Invoke-Expression
 Install-LTService -Server https://rmm.msinetworks.com -LocationID 18 -SkipDotNet -Force -Confirm:$false
