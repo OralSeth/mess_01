@@ -74,10 +74,10 @@ Function Get-UninstallString {
 
 $guid = (Get-UninstallString -Filter "*SPX*").GUID
 
-$args = @(
+$aList = @(
     "/x"
     ('"{0}"' -f "$($guid)")
     "/qn"
 )
 
-Start-Process "msiexec.exe" -ArgumentList $args -Wait -NoNewWindow
+Start-Process "msiexec.exe" -ArgumentList $aList -Wait -NoNewWindow
