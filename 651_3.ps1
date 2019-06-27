@@ -1,5 +1,3 @@
-Remove-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\RunONce" -Name "NextStep" -Force -Confirm:$false
-
 $bat = @(
     "Registry::\HKEY_CLASSES_ROOT\Installer\Products\0EE540D3694D7224A962B266E54C968A",
     "Registry::\HKEY_CLASSES_ROOT\Installer\Products\0F82903D025B36A4AA4A3FB9F015C1B6",
@@ -65,20 +63,12 @@ $bat = @(
 $bat | % {If (Test-Path $_) { Remove-Item $_ -Recurse -Force -Confirm:$false }}
 
 $keys = @{
-    'AZDC01' = "7795-79A8-4931-CFDB"
-    'AZHV02' = "1082-A77C-D606-A1A0"
-    'AZSCAN01' = "7795-79A8-4931-CFDB"
-    'AZEXCH01' = "1082-A77C-D606-A1A0"
     'DSH-GM' = "CC1F-A2F4-4FE2-9BAA"
-    'DAC02' = "C6A3-BD62-0915-85F8"
-    'DACDC01' = "C6A3-BD62-0915-85F8"
     'ECSDC01' = "1942-11D1-DFCF-604F"
     'ECSGS01' = "C91E-D29A-C966-68DA"
     'GVDDC01' = "38AB-256D-E91F-6412"
     'HLDC-001' = "13C1-A3B5-9854-564F"
     'LGIDC01' = "F307-66EA-5F71-7BFA"
-    'MSICW02' = "F0CF-0504-1E28-449D"
-    'MSIDC01' = "F02F-232A-E415-F67C"
     'NCHASQL01' = "72B5-92A1-D409-35BA"
     'OSANTDC01' = "1DAC-2823-B8E0-B1D0"
     'DCSRV02' = "3A7E-5334-430B-94D4"
@@ -92,7 +82,7 @@ $keys = @{
 
 $key = $keys["$($env:COMPUTERNAME)"]
 
-$args = @(
+$aList = @(
     "/i"
     ('"{0}"' -f "C:\Users\Public\spx_6.8.2.msi")
     "/qn"
@@ -100,7 +90,13 @@ $args = @(
 )
 
 If ($null -ne $key) {
-    $args += "KEY=$key"
+    $aList += "KEY=$key"
 }
 
-Start-Process "msiexec.exe" -ArgumentList $args -Wait -NoNewWindow
+Remove-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\RunONce" -Name "NextStep" -Force -Confirm:$false | Out-Null
+Remove-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\WinLogon" -Name "AutoAdminLogon" -Force -Confirm:$false | Out-Null
+Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\WinLogon" -Name "DefaultDomain" -Value "" -Force -Confirm:$false | Out-Null
+Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\WinLogon" -Name "DefaultUserName" -Value "" -Force -Confirm:$false | Out-Null
+Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\WinLogon" -Name "DefaultPassword" -Value "" -Force -Confirm:$false | Out-Null
+
+Start-Process "msiexec.exe" -ArgumentList $aList -Wait -NoNewWindow
