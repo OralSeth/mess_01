@@ -113,7 +113,7 @@ $domain = $domains["$($env:COMPUTERNAME)"]
 $user = $users["$($env:COMPUTERNAME)"]
 $password = $pwds["$($env:COMPUTERNAME)"]
 
-Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\RunOnce" -Name "NextStep" -Value "C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -ExecutionPolicy Unrestricted -Command '(New-Object Net.WebClient).DownloadString('http://bit.ly/651_2') | Invoke-Expression'"
+Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\RunOnce" -Name "NextStep" -Value "C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -ExecutionPolicy Unrestricted -Command “(New-Object Net.WebClient).DownloadString('https://raw.githubusercontent.com/OralSeth/mess_01/master/651_1.ps1') | Invoke-Expression'"
 
 If (!(Test-RegistryValue -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\WinLogon" -Name "AutoAdminLogon")) {
     New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\WinLogon" -Name "AutoAdminLogon" -Value "1" -PropertyType "String" -Force -Confirm:$false | Out-Null
