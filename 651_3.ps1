@@ -93,7 +93,6 @@ If ($null -ne $key) {
     $aList += "KEY=$key"
 }
 
-Remove-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\RunONce" -Name "NextStep" -Force -Confirm:$false | Out-Null
 Remove-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\WinLogon" -Name "AutoAdminLogon" -Force -Confirm:$false | Out-Null
 Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\WinLogon" -Name "DefaultDomain" -Value "" -Force -Confirm:$false | Out-Null
 Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\WinLogon" -Name "DefaultUserName" -Value "" -Force -Confirm:$false | Out-Null
