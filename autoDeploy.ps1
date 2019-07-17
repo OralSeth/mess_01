@@ -163,9 +163,6 @@ Function RenamePC {
 }
 
 Function AdjustPowerSettings {
-    $powerPlan = Get-WmiObject -Namespace root\cimv2\power -Class Win32_PowerPlan -Filter "ElementName = 'High Performance'"
-    $powerPlan.Activate()
-
     powercfg -change -monitor-timeout-ac 0
     powercfg -change -disk-timeout-ac 0
     powercfg -change -hibernate-timeout-ac 0
