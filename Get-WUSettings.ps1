@@ -285,4 +285,7 @@ Else {
     $result | Add-Member NoteProperty -Name "PendingReboot" -Value "Windows Updates have been waiting $($difference) to Reboot"
 }
 
+$svc = Get-Service wuauserv | Select -Property StartType,Status
+$result | Add-Member NoteProperty -Name "Service" -Value "$($svc.StartType) ($($status))"
+
 $result
