@@ -284,3 +284,5 @@ Else {
     $difference = "$($difference.Days) Days, $($difference.Hours) Hours, $($difference.Minutes) Minutes, $($difference.Seconds) Seconds"
     $result | Add-Member NoteProperty -Name "PendingReboot" -Value "Windows Updates have been waiting $($difference) to Reboot"
 }
+
+$result
