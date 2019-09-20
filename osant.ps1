@@ -62,8 +62,14 @@ ForEach ($sid in $SIDS) {
   }
 }
 
-$ethernet = Get-WmiObject -Class Win32_NetworkAdapterConfiguration | Where-Object {($_.IPEnabled -eq $true) -And ($_.DCHPEnabled -eq $true)}
-ForEach ($lan in $ethernet) {
-  $lan.ReleaseDHCPLease() | Out-Null
-  $lan.RenewDHCPLease() | Out-Null
+$erx = Get-WmiObject Win32_Product | Where-Object {$_.Name -eq "ePrescriptions" }
+If ($null -eq $erx) {
+  (New-Object Net.WebClient).DownloadFile('https://rmm.msinetworks.com/labtech/Transfer/Software/WinOMS/eRX/erxSetup.msi','C:\Users\Public\erxSetup.msi')
+  $msiArgs = @(
+    "/i",
+    ("{0}" -f "C:\Users\Public\erxSetup.msi"),
+    "/qn",
+    "/norestart"
+  )
 }
+Start-Process "msiexec.exe" -ArgumentList $msiArgs -Wait -NoNewWindow
