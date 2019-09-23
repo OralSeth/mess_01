@@ -71,5 +71,5 @@ If ($null -eq $erx) {
     "/qn",
     "/norestart"
   )
+  Start-Process "msiexec.exe" -ArgumentList $msiArgs -Wait -NoNewWindow
 }
-Start-Process "msiexec.exe" -ArgumentList $msiArgs -Wait -NoNewWindow
