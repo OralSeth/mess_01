@@ -285,7 +285,21 @@ Else {
     $result | Add-Member NoteProperty -Name "PendingReboot" -Value "Windows Updates have been waiting $($difference) to Reboot"
 }
 
+$sesh = New-Object -ComObject Microsoft.Update.Session
+$searcher = $sesh.CreateUpdateSearcher()
+$historyCount = $searcher.GetTotalHistoryCount()
+If ($historyCount -gt 0) {
+    $history = $searcher.QueryHistory(0,$HistoryCount) | ForEach-Object {$_.Date | Sort-Object Date | Select -First 1}
+    $history = $history | Select -First 1
+    $lastUpdate = $history | Get-Date -Format d
+
+    $result | Add-Member NoteProperty -Name "LastUpdate" -Value "$($lastUpdate)"
+}
+Else {
+    $result | Add-Member NoteProperty -Name "LastUpdate" -Value "N/A"
+}
+
 $svc = Get-Service wuauserv | Select -Property StartType,Status
-$result | Add-Member NoteProperty -Name "Service" -Value "$($svc.StartType) ($($status))"
+$result | Add-Member NoteProperty -Name "Service" -Value "$($svc.StartType) ($($svc.status))"
 
 $result
