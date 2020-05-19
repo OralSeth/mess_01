@@ -18,8 +18,10 @@ Function Clear-BrowserCache {
         )
     }
     
+    $ignore = @(".NET v4.5",".Net V4.5 Classic","MSSQL`$MICROSOFT`#`#WID","Public")
+    
     If (-not $users) {
-      $users = Get-ChildItem "C:\Users" | Where-Object {$_.PSIsContainer} | Select-Object @{n='Name';e={$_.BaseName}}
+      $users = Get-ChildItem "C:\Users" | Where-Object {$_.PSIsContainer -and $_.BaseName -notin $ignore} | Select-Object @{n='Name';e={$_.BaseName}}
     }
     
     $total1 = 0
