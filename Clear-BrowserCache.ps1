@@ -6,7 +6,7 @@ Function Clear-BrowserCache {
         [ValidateSet('Chrome','Firefox','Explorer','All')]
         [string[]]$Browser,
         [Parameter(Mandatory=$false,ValueFromPipeline=$true)]
-        [string[]]$Users
+        $Users
     )
     
     filter Get-FileSize {
