@@ -72,13 +72,13 @@ Function Clear-BrowserCache {
         
         ForEach ($u in $users) {
             $defaultFolder = Get-ChildItem -Path "C:\Users\$($u.Name)\AppData\Local\Mozilla\Firefox\Profiles" | Where-Object {($_.PSIsContainer) -and ($_.BaseName -like "*.default*")} | Select-Object FullName
-            $ffSize1 = (Get-ChildItem "$($defaultFolder)\cache2\entries" -Recurse | Measure-Object -Property Length -Sum ErrorAction SilentlyContinue).Sum
+            $ffSize1 = (Get-ChildItem "$($defaultFolder)\cache2\entries" -Recurse | Measure-Object -Property Length -Sum -ErrorAction SilentlyContinue).Sum
             $ffTotal1 = $ffTotal1 + $ffSize1
             $total1 = $total1 + $ffSize1
             
             Remove-Item "$($defaultFolder)\cache2\entries\*" -Recurse -Force -Confirm:$false -ErrorAction SilentlyContinue -Verbose
             
-            $ffSize2 = (Get-ChildItem "$($defaultFolder)\cache2\entries" -Recurse | Measure-Object -Property Length -Sum ErrorAction SilentlyContinue).Sum
+            $ffSize2 = (Get-ChildItem "$($defaultFolder)\cache2\entries" -Recurse | Measure-Object -Property Length -Sum -ErrorAction SilentlyContinue).Sum
             $ffTotal2 = $ffTotal2 + $ffSize2
             $total2 = $total2 + $ffSize2
             
