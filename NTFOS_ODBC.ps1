@@ -74,7 +74,7 @@ ElseIf ($os -like '*7*')
 	{
 		New-Item -Path "HKLM:\SOFTWARE\WOW6432Node\ODBC\ODBC.INI" -Name 'FaxContacts' | Out-Null
 		
-		$driver = Get-ItemPropertyValue 'HKLM:\SOFTWARE\Wow6432Node\ODBC\ODBCINST.INI\MySQL ODBC 8.0 ANSI Driver' -Name Driver -Er
+		$driver = Get-ItemPropertyValue 'HKLM:\SOFTWARE\Wow6432Node\ODBC\ODBCINST.INI\MySQL ODBC 8.0 ANSI Driver' -Name Driver
 		
 		New-ItemProperty -Path "HKLM:\SOFTWARE\WOW6432Node\ODBC\ODBC.INI\FaxContacts" -Name 'DATABASE' -PropertyType String -Value "faxContactsDB" -Force | Out-Null
 		New-ItemProperty -Path "HKLM:\SOFTWARE\WOW6432Node\ODBC\ODBC.INI\FaxContacts" -Name 'Driver' -PropertyType String -Value "$($driver)" -Force | Out-Null
