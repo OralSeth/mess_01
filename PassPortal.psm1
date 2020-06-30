@@ -44,7 +44,7 @@ Function Get-KeyInfo {
 }
 
 Function Get-Token {
-  $tokenRequest = "$($global:baseURL)/auth?key=$($global:key)&secret=$($global:secret)&app=$global:apiKey)"
+  $tokenRequest = "$($global:baseURL)/auth?key=$($global:key)&secret=$($global:secret)&app=$($global:apiKey)"
   $tokenResponse = (Invoke-RestMethod "$($tokenRequest)").results
   
   $global:token = $tokenResponse.token
