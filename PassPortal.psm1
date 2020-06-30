@@ -108,8 +108,11 @@ Function Get-PassPortalData {
     [Parameter(Mandatory=$false)]
     [Alias("As")]
     [string]$RequestAs = "$($global:RequestAs)",
+    
     [string]$APIKey,
+    
     [string]$BaseURL = "https://us.passportalmsp.com/api",
+    
     [string]$OrgKey = "m$!P@55p0rt@l",
     
     [Parameter(Mandatory=$true)]
