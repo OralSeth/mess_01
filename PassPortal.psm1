@@ -109,8 +109,8 @@ Function Get-PassPortalData {
     [Alias("As")]
     [string]$RequestAs = "$($global:RequestAs)",
     [string]$APIKey,
-    [string]$BaseURL = "https://us.passportalmsp.com/api"
-    [string]$OrgKey = "m$!P@55p0rt@l"
+    [string]$BaseURL = "https://us.passportalmsp.com/api",
+    [string]$OrgKey = "m$!P@55p0rt@l",
     
     [Parameter(Mandatory=$true)]
     [string]$APIKey,
@@ -125,9 +125,7 @@ Function Get-PassPortalData {
     [ValidateNotNull()]
     [System.Management.Automation.PSCredential]
     [System.Management.Automation.Credential()]
-    $Credential = [System.Management.Automation.PSCredential]::Empty,
-    
-    
+    $Credential = [System.Management.Automation.PSCredential]::Empty    
   )
   
   $global:apiKey = "$($APIKey)"
