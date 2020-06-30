@@ -109,12 +109,6 @@ Function Get-PassPortalData {
     [Alias("As")]
     [string]$RequestAs = "$($global:RequestAs)",
     
-    [string]$APIKey,
-    
-    [string]$BaseURL = "https://us.passportalmsp.com/api",
-    
-    [string]$OrgKey = "m$!P@55p0rt@l",
-    
     [Parameter(Mandatory=$true)]
     [string]$APIKey,
     
@@ -215,7 +209,7 @@ Function Get-ClientCredential {
   $global:ClientIDs = @()
   
   ForEach ($cli in $global:ClientName) {
-    If ($cli -in ($global:Clients.Name).Trim() {
+    If ($cli -in ($global:Clients.Name).Trim()) {
       $global:ClientIDs += ($global:Clients | Where-Object {($_.Name).Trim() -eq "$($cli)"}).ID
     }
   }
