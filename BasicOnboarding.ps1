@@ -47,30 +47,115 @@ Function Get-NetConnectionProfile {
 
 $pubProfs = Get-NetConnectionProfile | Where-Object {$_.Category -eq "Public"}
 
-ForEach ($network in $pubProfs) {
-  $nlmType = [Type]::GetTypeFromCLSID('DCB00C01-570F-4A9B-8D69-199FDBA5723B')
-  $networkListManager = [Activator]::CreateInstance($nlmType)
+If ($pubProfs) {
+  ForEach ($network in $pubProfs) {
+    $nlmType = [Type]::GetTypeFromCLSID('DCB00C01-570F-4A9B-8D69-199FDBA5723B')
+    $networkListManager = [Activator]::CreateInstance($nlmType)
    
-  $Categories = @{
-    'Public' = 0x00
-    'Private' = 0x01
-    'Domain' = 0x02
+    $Categories = @{
+      'Public' = 0x00
+      'Private' = 0x01
+      'Domain' = 0x02
+    }
+
+    $name = $Network.Name
+    $cat = "Private"
+
+    $allNetworks = $networkListManager.GetNetworks(1) 
+    $network = $allNetworks | Where-Object {$_.GetName() -eq $Name}
+
+    $network.SetCategory($Categories[$cat])
   }
-
-  $name = $Network.Name
-  $cat = "Private"
-
-  $allNetworks = $networkListManager.GetNetworks(1) 
-  $network = $allNetworks | Where-Object {$_.GetName() -eq $Name}
-
-  $network.SetCategory($Categories[$cat])
 }
 
 # Next, Turn on WINRM and Enable PSRemoting
-Enable-PSRemoting -Force -Confirm:$false
+$testWSMan = Test-WSMan -ErrorAction SilentlyContinue
+
+If (-Not $testWSMan) {
+  Enable-PSRemoting -Force -Confirm:$false
+}
 
 # Adjust Power Settings
-powercfg -change -monitor-timeout-ac 30
-powercfg -change -disk-timeout-ac 0
-powercfg -change -hibernate-timeout-ac 0
-powercfg -change -standby-timeout-ac 0
+# This will check Current Settings, and Adjust as Needed
+
+$os = (Get-WmiObject Win32_OperatingSystem).Caption
+If ($os -like "*Server*") {
+  [int]$add = 6
+}
+Else {
+  [int]$add = 5
+}
+
+# Get GUID of Current Active Power Scheme
+$pwrGUIDRaw = (((Get-WmiObject Win32_PowerPlan -Namespace 'root\cimv2\power' | Where {$_.IsActive -eq "true"}).InstanceID).Split("\\"))[1]
+$pwrGUIDLength = $pwrGUIDRaw.Length - 2
+$pwrGUID = $pwrGUIDRaw.Substring(1, $pwrGUIDLength)
+
+# Get All Settings
+$pwrSettings = powercfg -query $pwrGUID
+
+# HDD Turn Off
+For ($hdd = 0; $hdd -lt $pwrSettings.Length; $hdd++) {
+  $hddLine = $pwrSettings[$hdd]
+  
+  If ($hddLine -like "*Turn off hard disk after*") {
+    $hddIndex = $hdd
+    break
+  }
+}
+
+$hddRaw = $pwrSettings[$hddIndex + $add]
+$hdd = $hddRaw.Substring($hddRaw.IndexOf(":")+2)
+
+If ($hdd -ne "0x00000000") {
+  powercfg -change -disk-timout-dc 0
+}
+
+# Sleep
+For ($s = 0; $s -lt $pwrSettings.Length; $s++) {
+  $sLine = $pwrSettings[$s]
+  If ($sLine.ToLower() -like "*sleep after*") {
+    $sIndex = $s
+    break
+  }
+}
+
+$sleepRaw = $pwrSettings[$sIndex + $add]
+$sleep = $sleepRaw.Substring($sleepRaw.IndexOf(":")+2)
+
+If ($sleep -ne "0x00000000") {
+  powercfg -change -standby-timeout-ac 0
+}
+
+# Hibernate
+For ($h = 0; $h -lt $pwrSettings.Length; $h++) {
+  $hLine = $pwrSettings[$h]
+  If ($hLine.ToLower() -like "*hibernate after*") {
+    $hIndex = $h
+    break
+  }
+}
+
+$hibernateRaw = $pwrSettings[$hIndex + $add]
+$hibernate = $hibernateRaw.Substring($hibernateRaw.IndexOf(":")+2)
+
+If ($hibernate -ne "0x00000000") {
+  powercfg -change -hibernate-timeout-ac 0
+}
+
+# Screen Time-Out
+For ($m = 0; $m -lt $pwrSettings.Length; $m++) {
+  $mLine = $pwrSettings[$m]
+  If ($mLine.ToLower() -like "*turn off display after*") {
+    $mIndex = $m
+    break
+  }
+}
+
+$monitorRaw = $pwrSettings[$mIndex + $add]
+$monitor = $monitorRaw.Substring($monitorRaw.IndexOf(":")+2)
+
+If ($monitor -ne "0x00000708") {
+  powercfg -change -monitor-timeout-ac 30
+}
+
