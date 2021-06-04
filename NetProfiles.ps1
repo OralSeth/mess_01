@@ -24,6 +24,8 @@ Function Get-NetConnectionProfile {
       2 = "Domain"
     }
 
+    $Networks = $networkListManager.GetNetworks(1)
+
     If ($NetworkCategory) {
       Write-Verbose "Filtering Results to Match Category '$networkCategory'."
       $networks = $Networks | Where-Object {$_.GetCategory() -eq $NetworkCategory}
