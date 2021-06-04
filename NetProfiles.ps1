@@ -120,7 +120,7 @@ Function Set-NetConnectionProfile {
         Write-Verbose "Creating Output Object for Network '$Name'."
         
         New-Object -TypeName PSObject -Property @{
-          Category = $ReverseCategories[($Network.GetCategory()]
+          Category = $ReverseCategories[($Network.GetCategory())]
           Description = $Network.GetDescription()
           Name = $Network.GetName()
           IsConnected = $Network.IsConnected
