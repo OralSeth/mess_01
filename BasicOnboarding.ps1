@@ -11,7 +11,7 @@ ForEach ($svc in $svcs) {
   $scvInfo = Get-Service $svc
   
   If ($svcInfo.StartType -ne 'Automatic') {
-    Set-Service $svc -StartupType 'Automatic' -Force -Confirm:$false
+    Set-Service $svc -StartupType 'Automatic' -Confirm:$false
   }
   
   If ($svcInfo.Status -ne 'Running') {
