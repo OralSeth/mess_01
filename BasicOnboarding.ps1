@@ -2,7 +2,7 @@
 & cmd.exe /c "netsh advfirewall set currentprofile firewallpolicy allowinbound,allowoutbound"
 
 # Disable UAC
-& cmd.exe /c "REG ADD HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System /v "EnableLUA" /t REG_DWORD /d 0 /f"
+& cmd.exe /c "REG ADD HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System /v 'EnableLUA' /t REG_DWORD /d 0 /f"
 
 # Enable Network Discovery
 $svcs = @('dnscache','FDResPub','SSDPSRV','upnphost')
@@ -20,6 +20,7 @@ ForEach ($svc in $svcs) {
 }
 
 # Enable PSRemoting
+<#
 # First, Convert 'Public' Network Profiles to 'Private'
 Function Get-NetConnectionProfile {
   $nlmType = [Type]::GetTypeFromCLSID('DCB00C01-570F-4A9B-8D69-199FDBA5723B')
@@ -67,6 +68,7 @@ If ($pubProfs) {
     $network.SetCategory($Categories[$cat])
   }
 }
+#>
 
 # Next, Turn on WINRM and Enable PSRemoting
 $testWSMan = Test-WSMan -ErrorAction SilentlyContinue
@@ -108,7 +110,7 @@ $hddRaw = $pwrSettings[$hddIndex + $add]
 $hdd = $hddRaw.Substring($hddRaw.IndexOf(":")+2)
 
 If ($hdd -ne "0x00000000") {
-  powercfg -change -disk-timout-dc 0
+  powercfg -change -disk-timeout-dc 0
 }
 
 # Sleep
