@@ -77,6 +77,7 @@ If (-Not $testWSMan) {
   Enable-PSRemoting -Force -Confirm:$false
 }
 
+<#
 # Adjust Power Settings
 # This will check Current Settings, and Adjust as Needed
 
@@ -160,4 +161,4 @@ $monitor = $monitorRaw.Substring($monitorRaw.IndexOf(":")+2)
 If ($monitor -ne "0x00000708") {
   powercfg -change -monitor-timeout-ac 30
 }
-
+#>
